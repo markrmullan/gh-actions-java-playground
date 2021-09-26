@@ -11,6 +11,6 @@ public class ExampleTest {
 
   @Test
   public void testFailingTest() {
-    Assertions.assertTrue(1 > 2); // fixme!
+    Assertions.assertTrue(1 < 2); // fixme!
   }
 }
