@@ -12,4 +12,9 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '8'
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
       - run: ./gradlew build --no-daemon
+
+# https://github.com/gradle/wrapper-validation-action
+# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
