@@ -14,9 +14,6 @@ jobs:
           distribution: 'adopt'
           java-version: '8'
 
-      - name: Change wrapper permissions
-        run: chmod +x ./gradlew
-
       - name: Display version
         run: ./gradlew --version
 
