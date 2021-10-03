@@ -7,18 +7,28 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          # Full git history is needed to get a proper list of changed files within `super-linter`
+          fetch-depth: 0
+
+      - name: Lint Code Base
+        uses: axel-op/googlejavaformat-action@v3
+        with:
+          args: "--skip-sorting-imports --replace"
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '8'
 
-      - name: Display version
-        run: ./gradlew --version
-
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
+
+      - name: Display version
+        run: ./gradlew --version
 
       - run: ./gradlew build --no-daemon
 
