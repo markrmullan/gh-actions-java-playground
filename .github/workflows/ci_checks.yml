@@ -7,15 +7,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      # https://github.com/axel-op/googlejavaformat-action/issues/11
+      - if: github.event_name != 'pull_request'
         uses: actions/checkout@v2
+      - if: github.event_name == 'pull_request'
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '8'
 
-      - name: Lint code base
+      - if: github.event_name == 'pull_request'
+        name: Lint code base
         uses: axel-op/googlejavaformat-action@v3
         with:
           args: "--skip-sorting-imports --replace"
