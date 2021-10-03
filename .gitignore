@@ -5,9 +5,6 @@
 # Log file
 *.log
 
-# BlueJ files
-*.ctxt
-
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
@@ -22,20 +19,18 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-
 # https://github.com/github/gitignore/blob/master/Global/macOS.gitignore
 # General
 .DS_Store
 .AppleDouble
 .LSOverride
 
-#https://github.com/github/gitignore/blob/4fb75626fc556a9a49e19a79322d0a230f457fc9/Global/JetBrains.gitignore
+# https://github.com/github/gitignore/blob/master/Global/JetBrains.gitignore
 .idea/
 
 # Gradle and Maven with auto-import
 # When using Gradle or Maven with auto-import, you should exclude module files,
-# since they will be recreated, and may cause churn.  Uncomment if using
-# auto-import.
+# since they will be recreated, and may cause churn.
 *.iml
 *.ipr
 
@@ -49,12 +44,3 @@ cmake-build-*/
 .gradle/
 build/
 out/
-
-# JIRA plugin
-atlassian-ide-plugin.xml
-
-# Crashlytics plugin (for Android Studio and IntelliJ)
-com_crashlytics_export_strings.xml
-crashlytics.properties
-crashlytics-build.properties
-fabric.properties

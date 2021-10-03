@@ -7,25 +7,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # https://github.com/axel-op/googlejavaformat-action/issues/11
-      - if: github.event_name != 'pull_request'
-        uses: actions/checkout@v2
-      - if: github.event_name == 'pull_request'
-        uses: actions/checkout@v2
-        with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/checkout@v2
 
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '8'
 
-      - if: github.event_name == 'pull_request'
-        name: Lint code base
+      # https://github.com/axel-op/googlejavaformat-action
+      - name: Lint code base
         uses: axel-op/googlejavaformat-action@v3
         with:
-          args: "--skip-sorting-imports --replace"
+          args: "--skip-sorting-imports --dry-run --set-exit-if-changed"
+          version: 1.7
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Validate Gradle wrapper
