@@ -9,20 +9,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          # Full git history is needed to get a proper list of changed files within `super-linter`
-          fetch-depth: 0
-
-      - name: Lint Code Base
-        uses: axel-op/googlejavaformat-action@v3
-        with:
-          args: "--skip-sorting-imports --replace"
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '8'
+
+      - name: Lint code base
+        uses: axel-op/googlejavaformat-action@v3
+        with:
+          args: "--skip-sorting-imports --replace"
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
