@@ -1,12 +1,43 @@
 plugins {
-    id 'java'
+    id 'java-library'
+    id 'maven-publish'
+    id "com.diffplug.spotless" version "5.16.0"
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+// this groupId is OSSRH registered https://issues.sonatype.org/browse/OSSRH-76799
+group 'io.github.markrmullan'
+version '1.0.0-SNAPSHOT'
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            name = 'maven'
+            url = layout.buildDirectory.dir("repo")
+        }
+    }
+}
 
 repositories {
     mavenCentral()
+}
+
+java {
+    toolchain {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
+spotless {
+    java {
+        googleJavaFormat('1.7')
+    }
 }
 
 dependencies {
@@ -16,4 +47,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
+
+    testLogging {
+        exceptionFormat = 'full'
+    }
 }
