@@ -18,9 +18,8 @@ jobs:
             then
               echo "Release tag (${RELEASE_TAG_NAME:1}) does not match the build.gradle version"
               exit 1
-            else
-              echo "Release tag matches the build.gradle version. Proceeding with publish_release workflow."
           fi
+          echo "Release tag matches the build.gradle version. Proceeding with publish_release workflow."
 
       - name: Setup Java
         uses: actions/setup-java@v2
