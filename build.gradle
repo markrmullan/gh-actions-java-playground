@@ -12,6 +12,10 @@ task printVersion {
     println project.version
 }
 
+def isReleaseBuild() {
+    return !project.version.contains("SNAPSHOT")
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -24,7 +28,7 @@ publishing {
     repositories {
         maven {
             name = "OSSRH"
-            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            url = isReleaseBuild() ? "https://s01.oss.sonatype.org/content/repositories/releases/" : "https://s01.oss.sonatype.org/content/repositories/snapshots/"
             credentials {
                 username = System.getenv("MAVEN_USERNAME")
                 password = System.getenv("MAVEN_PASSWORD")
