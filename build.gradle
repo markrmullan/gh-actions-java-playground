@@ -13,25 +13,6 @@ task printVersion {
     println project.version
 }
 
-def isReleaseBuild() {
-    return !project.version.contains("SNAPSHOT")
-}
-
-//publishing {
-//    repositories {
-//        maven {
-//            def releaseRepo = "$buildDir/repos/releases"
-//            def snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-//            name = "OSSRH"
-//            url = isReleaseBuild() ? releaseRepo : snapshotRepo
-//            credentials {
-//                username = System.getenv("ORG_GRADLE_PROJECT_mavenCentralUsername")
-//                password = System.getenv("ORG_GRADLE_PROJECT_mavenCentralPassword")
-//            }
-//        }
-//    }
-//}
-
 repositories {
     mavenCentral()
 }
