@@ -1,6 +1,5 @@
 plugins {
     id 'java-library'
-//    id 'signing'
     id "com.diffplug.spotless" version "5.16.0"
     // https://github.com/vanniktech/gradle-maven-publish-plugin
     id 'com.vanniktech.maven.publish' version '0.18.0'
@@ -14,29 +13,11 @@ task printVersion {
     println project.version
 }
 
-//task javadocJar(type: Jar) {
-//    archiveClassifier.set('javadoc')
-//    from javadoc
-//}
-//
-//task sourcesJar(type: Jar) {
-//    archiveClassifier.set('sources')
-//    from sourceSets.main.allSource
-//}
-
 def isReleaseBuild() {
     return !project.version.contains("SNAPSHOT")
 }
 
 publishing {
-//    publications {
-//        mavenJava(MavenPublication) {
-//            from components.java
-//        }
-//    }
-
-    // See https://docs.github.com/en/actions/publishing-packages/publishing-java-packages-with-gradle
-    // and https://docs.gradle.org/current/userguide/publishing_setup.html
     repositories {
         maven {
             def releaseRepo = "https://s01.oss.sonatype.org/content/repositories/releases/"
@@ -51,24 +32,9 @@ publishing {
     }
 }
 
-// https://docs.gradle.org/current/userguide/signing_plugin.html
-//signing {
-//    useGpgCmd()
-//    sign publishing.publications.mavenJava
-//}
-
-//tasks.withType(Sign) {
-//    // Requires gnupg. https://github.com/gradle/gradle/issues/8657
-////    onlyIf { isReleaseBuild() && project.hasProperty("signing.gnupg.keyName") }
-//}
-
 repositories {
     mavenCentral()
 }
-
-//artifacts {
-//    archives javadocJar, sourcesJar
-//}
 
 java {
     toolchain {
