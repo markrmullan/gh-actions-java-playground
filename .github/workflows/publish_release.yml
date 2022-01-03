@@ -28,9 +28,24 @@ jobs:
           java-version: '8'
 
       - name: Publish package
-        run: ./gradlew publish
+        run: ./gradlew publish --no-daemon --no-parallel
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_PASSWORD }}
           # upload the ASCII-armored public key to https://keyserver.ubuntu.com/
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ARTIFACT_SIGNING_PRIVATE_KEY }}
+
+      - name: Close and release package
+#        closeAndReleaseRepository
+        run: |
+          ./gradlew testingasdf ||
+          echo <<EOF
+            Publish to Nexus Sonatype succeeded but failed to close and release. This step assumes there
+            is only one staging repository active when it is called. Stale staging repositories may need
+            to be purged manually before proceeding. They can be removed by logging into
+            https://s01.oss.sonatype.org/.
+          EOF
+
+      # Upon completion of the release step, OSSRH will sync components to Maven Central typically within
+      # 30 minutes, though updates to search may take up to four hours.
+      # Ref https://central.sonatype.org/publish/publish-guide/#releasing-to-central
