@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'signing'
     id "com.diffplug.spotless" version "5.16.0"
 }
 
@@ -10,6 +11,16 @@ version '1.0.0-SNAPSHOT'
 
 task printVersion {
     println project.version
+}
+
+task javadocJar(type: Jar) {
+    archiveClassifier.set('javadoc')
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from sourceSets.main.allSource
 }
 
 def isReleaseBuild() {
@@ -27,8 +38,10 @@ publishing {
     // and https://docs.gradle.org/current/userguide/publishing_setup.html
     repositories {
         maven {
+            def releaseRepo = "https://s01.oss.sonatype.org/content/repositories/releases/"
+            def snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
             name = "OSSRH"
-            url = isReleaseBuild() ? "https://s01.oss.sonatype.org/content/repositories/releases/" : "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            url = isReleaseBuild() ? releaseRepo : snapshotRepo
             credentials {
                 username = System.getenv("MAVEN_USERNAME")
                 password = System.getenv("MAVEN_PASSWORD")
@@ -37,8 +50,23 @@ publishing {
     }
 }
 
+// https://docs.gradle.org/current/userguide/signing_plugin.html
+signing {
+    useGpgCmd()
+    sign publishing.publications.mavenJava
+}
+
+tasks.withType(Sign) {
+    // Requires gnupg. https://github.com/gradle/gradle/issues/8657
+//    onlyIf { isReleaseBuild() && project.hasProperty("signing.gnupg.keyName") }
+}
+
 repositories {
     mavenCentral()
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
 }
 
 java {
