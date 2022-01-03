@@ -1,38 +1,39 @@
 plugins {
     id 'java-library'
-    id 'maven-publish'
-    id 'signing'
+//    id 'signing'
     id "com.diffplug.spotless" version "5.16.0"
+    // https://github.com/vanniktech/gradle-maven-publish-plugin
+    id 'com.vanniktech.maven.publish' version '0.18.0'
 }
 
-// this groupId is OSSRH registered https://issues.sonatype.org/browse/OSSRH-76799
-group 'io.github.markrmullan'
-version '1.0.0-SNAPSHOT'
+// from gradle.properties
+group = project.property('GROUP')
+version = project.property('VERSION_NAME')
 
 task printVersion {
     println project.version
 }
 
-task javadocJar(type: Jar) {
-    archiveClassifier.set('javadoc')
-    from javadoc
-}
-
-task sourcesJar(type: Jar) {
-    archiveClassifier.set('sources')
-    from sourceSets.main.allSource
-}
+//task javadocJar(type: Jar) {
+//    archiveClassifier.set('javadoc')
+//    from javadoc
+//}
+//
+//task sourcesJar(type: Jar) {
+//    archiveClassifier.set('sources')
+//    from sourceSets.main.allSource
+//}
 
 def isReleaseBuild() {
     return !project.version.contains("SNAPSHOT")
 }
 
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
+//    publications {
+//        mavenJava(MavenPublication) {
+//            from components.java
+//        }
+//    }
 
     // See https://docs.github.com/en/actions/publishing-packages/publishing-java-packages-with-gradle
     // and https://docs.gradle.org/current/userguide/publishing_setup.html
@@ -51,23 +52,23 @@ publishing {
 }
 
 // https://docs.gradle.org/current/userguide/signing_plugin.html
-signing {
-    useGpgCmd()
-    sign publishing.publications.mavenJava
-}
+//signing {
+//    useGpgCmd()
+//    sign publishing.publications.mavenJava
+//}
 
-tasks.withType(Sign) {
-    // Requires gnupg. https://github.com/gradle/gradle/issues/8657
-//    onlyIf { isReleaseBuild() && project.hasProperty("signing.gnupg.keyName") }
-}
+//tasks.withType(Sign) {
+//    // Requires gnupg. https://github.com/gradle/gradle/issues/8657
+////    onlyIf { isReleaseBuild() && project.hasProperty("signing.gnupg.keyName") }
+//}
 
 repositories {
     mavenCentral()
 }
 
-artifacts {
-    archives javadocJar, sourcesJar
-}
+//artifacts {
+//    archives javadocJar, sourcesJar
+//}
 
 java {
     toolchain {
@@ -92,5 +93,16 @@ test {
 
     testLogging {
         exceptionFormat = 'full'
+    }
+}
+
+/**
+ * Publishing to Maven Central. See https://github.com/vanniktech/gradle-maven-publish-plugin
+ */
+allprojects {
+    plugins.withId("com.vanniktech.maven.publish") {
+        mavenPublish {
+            sonatypeHost = "S01"
+        }
     }
 }
