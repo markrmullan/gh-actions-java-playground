@@ -38,13 +38,14 @@ jobs:
       - name: Close and release package
 #        closeAndReleaseRepository
         run: |
-          ./gradlew testingasdf ||
-          echo <<EOF
-            Publish to Nexus Sonatype succeeded but failed to close and release. This step assumes there
-            is only one staging repository active when it is called. Stale staging repositories may need
-            to be purged manually before proceeding. They can be removed by logging into
-            https://s01.oss.sonatype.org/.
-          EOF
+          if ! ./gradlew testingasdf; then
+            echo <<EOF
+              Publish to Nexus Sonatype succeeded but failed to close and release. This step assumes there
+              is only one staging repository active when it is called. Stale staging repositories may need
+              to be purged manually before proceeding. They can be removed by logging into
+              https://s01.oss.sonatype.org/.
+            EOF
+          fi
 
       # Upon completion of the release step, OSSRH will sync components to Maven Central typically within
       # 30 minutes, though updates to search may take up to four hours.
