@@ -45,6 +45,7 @@ jobs:
             to be purged manually before proceeding. They can be removed by logging into
             https://s01.oss.sonatype.org/."
             echo "🛑🛑🛑"
+            exit 1
           fi
 
       # Upon completion of the release step, OSSRH will sync components to Maven Central typically within
