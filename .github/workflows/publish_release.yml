@@ -34,7 +34,7 @@ jobs:
           java-version: '8'
 
       - name: Publish package
-        run: ./gradlew publish --no-daemon --no-parallel
+        run: ./gradlew publish --no-daemon --no-parallel --info
 
       - name: Close and release package
         run: |
