@@ -7,7 +7,8 @@ plugins {
 
 // from gradle.properties
 group = project.property('GROUP')
-version = project.property('VERSION_NAME')
+//version = project.property('VERSION_NAME')
+version = '1.0.9'
 
 task printVersion {
     println project.version
