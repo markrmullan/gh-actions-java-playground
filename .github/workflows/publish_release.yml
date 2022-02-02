@@ -38,6 +38,12 @@ jobs:
 
       - name: Close and release package
         run: |
+          if ./gradlew -q printVersion | grep -q "SNAPSHOT"
+            then
+            echo "This is a SNAPSHOT release — exiting early and not invoking ./gradlew closeAndReleaseRepository"
+            exit 0
+          fi
+
           if ! ./gradlew closeAndReleaseRepository; then
             echo "🛑🛑🛑"
             echo "Publish to Nexus Sonatype succeeded, but failed to close and release. This step assumes there
